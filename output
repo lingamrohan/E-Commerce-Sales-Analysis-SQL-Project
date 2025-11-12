@@ -1,0 +1,105 @@
+🧾 PROJECT: E-Commerce Sales Analysis
+⚙️ DATABASE: ECommerceDB
+
+🔹 1. Show all orders with customer names
+Query:
+SELECT O.OrderID, C.CustomerName, O.OrderDate
+FROM Orders O
+JOIN Customers C ON O.CustomerID = C.CustomerID;
+
+Output:
+OrderIDCustomerNameOrderDate1Ravi Kumar2025-10-012Sneha Sharma2025-10-033John Doe2025-10-054Ravi Kumar2025-10-06
+
+🔹 2. Total sales amount per order
+Query:
+SELECT 
+    OD.OrderID,
+    SUM(P.Price * OD.Quantity) AS TotalAmount
+FROM OrderDetails OD
+JOIN Products P ON OD.ProductID = P.ProductID
+GROUP BY OD.OrderID;
+
+Output:
+OrderIDTotalAmount169,000.00225,000.0037,000.00427,000.00
+💡 Explanation:
+Order 1 → 1 Laptop (₹65,000) + 2 Headphones (₹2,000×2) = ₹69,000
+Order 4 → 1 Mobile (₹25,000) + 1 Headphone (₹2,000) = ₹27,000
+
+🔹 3. Total revenue by product category
+Query:
+SELECT 
+    P.Category,
+    SUM(P.Price * OD.Quantity) AS TotalRevenue
+FROM OrderDetails OD
+JOIN Products P ON OD.ProductID = P.ProductID
+GROUP BY P.Category;
+
+Output:
+CategoryTotalRevenueElectronics115,000.00Accessories6,000.00Fashion7,000.00
+
+🔹 4. Top 3 customers by total spending
+Query:
+SELECT 
+    C.CustomerName,
+    SUM(P.Price * OD.Quantity) AS TotalSpent
+FROM Customers C
+JOIN Orders O ON C.CustomerID = O.CustomerID
+JOIN OrderDetails OD ON O.OrderID = OD.OrderID
+JOIN Products P ON OD.ProductID = P.ProductID
+GROUP BY C.CustomerName
+ORDER BY TotalSpent DESC
+LIMIT 3;
+
+Output:
+CustomerNameTotalSpentRavi Kumar96,000.00Sneha Sharma25,000.00John Doe7,000.00
+
+🔹 5. Most popular product (by quantity sold)
+Query:
+SELECT 
+    P.ProductName,
+    SUM(OD.Quantity) AS TotalSold
+FROM OrderDetails OD
+JOIN Products P ON OD.ProductID = P.ProductID
+GROUP BY P.ProductName
+ORDER BY TotalSold DESC
+LIMIT 1;
+
+Output:
+ProductNameTotalSoldHeadphones3
+💡 Explanation:
+Headphones sold 3 units across multiple orders → most popular product.
+
+🔹 6. Monthly sales trend
+Query:
+SELECT 
+    DATE_FORMAT(O.OrderDate, '%Y-%m') AS Month,
+    SUM(P.Price * OD.Quantity) AS MonthlySales
+FROM Orders O
+JOIN OrderDetails OD ON O.OrderID = OD.OrderID
+JOIN Products P ON OD.ProductID = P.ProductID
+GROUP BY Month
+ORDER BY Month;
+
+Output:
+MonthMonthlySales2025-10128,000.00
+💡 Explanation:
+All orders occurred in October 2025, so total monthly sales = ₹128,000.
+
+🧠 Final Insights:
+
+
+Top Customer: Ravi Kumar
+
+
+Best-Selling Product: Headphones
+
+
+Most Profitable Category: Electronics
+
+
+Total Revenue (October 2025): ₹128,000
+
+
+
+Would you like me to make a report version (with abstract, ER diagram, screenshots, and conclusion) — formatted like a college mini project PDF?
+I can generate that next for you automatically.
